@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Generated frontend assets ###
+node_modules/
+src/main/resources/static/css/tailwind.css
