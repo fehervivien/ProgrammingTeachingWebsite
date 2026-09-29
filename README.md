@@ -1,5 +1,13 @@
 # ProgrammingTeachingWebsite
 
+## Database setup
+
+With docker run this command to setup the PostgreSQL use by the application:
+
+```bash
+docker run -d --name progteaching-postgres -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_DB=progteaching_db -e POSTGRES_HOST_AUTH_METHOD=trust postgres:18.6`
+```
+
 ## Frontend / Tailwind CSS
 
 The project uses Tailwind CSS through npm and PostCSS. The source stylesheet is
