@@ -3,10 +3,22 @@ spring:
     url: jdbc:postgresql://localhost:5432/progteaching_db
     username: postgres
     password:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout:
+
+# TODO: ezt átnézni kell-e
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+
+jwt:
+  secret: !E9gqD,)QXGDhFT(,{nyT&5jP;Fi.B-$?RP.W^i|RJI #TODO valahogyan megcsinálni később hogy ez ne legyen itt, mert safety risk
+  expiration: 3600000
+  refresh-expiration: 604800000
