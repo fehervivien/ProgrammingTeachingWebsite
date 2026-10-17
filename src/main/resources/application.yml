@@ -1,13 +1,44 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/progteaching_db
+logging:
+  level:
+    com.ptw: DEBUG
+
+server:
+  servlet:
+    session:
+      cookie:
+        name: JSESSIONID
+        http-only: true # TODO átmeneti
+        secure: false # TODO átmeneti
+      timeout: 24h #TODO vissza csökkenteni 30m-re később, ami a default, tesztelésekhez hasznons még most a több idő
+
+con:
+  user:
+    url: jdbc:postgresql://localhost:5432/progteaching_user_db
     username: postgres
     password:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 10
+      idle-timeout: 600000
+      max-lifetime: 3600000
+
+  course:
+    url: jdbc:postgresql://localhost:5433/progteaching_course_db
+    username: postgres
+    password:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 10
+      idle-timeout: 600000
+      max-lifetime: 3600000
+
+spring:
   data:
     redis:
       host: localhost
       port: 6379
-      timeout:
 
 # TODO: ezt átnézni kell-e
 #  jpa:
@@ -19,6 +50,6 @@ spring:
 #        format_sql: true
 
 jwt:
-  secret: !E9gqD,)QXGDhFT(,{nyT&5jP;Fi.B-$?RP.W^i|RJI #TODO valahogyan megcsinálni később hogy ez ne legyen itt, mert safety risk
-  expiration: 3600000
-  refresh-expiration: 604800000
+  secret: "!E9gqD,)QXGDhFT(,{nyT&5jP;Fi.B-$?RP.W^i|RJI" #TODO valahogyan megcsinálni később hogy ez ne legyen itt, mert safety risk
+  access-expiration-ms: 3600000
+  refresh-expiration-ms: 604800000
