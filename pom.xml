@@ -34,6 +34,8 @@
 		<npm.version>10.9.2</npm.version>
 		<postgresql.version>42.7.14</postgresql.version>
 		<jwt-api.version>0.13.0</jwt-api.version>
+		<jacoco.version>0.8.15</jacoco.version>
+		<sonar.version>5.8.0.7211</sonar.version>
 	</properties>
 
 	<parent>
@@ -185,6 +187,18 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonarsource.scanner.maven</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>${sonar.version}</version>
 			</plugin>
 		</plugins>
 	</build>
