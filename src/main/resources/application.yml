@@ -1,12 +1,45 @@
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/progteaching_db
+logging:
+  level:
+    com.ptw: DEBUG
+
+server:
+  servlet:
+    session:
+      cookie:
+        name: JSESSIONID
+        http-only: true # TODO átmeneti
+        secure: false # TODO átmeneti
+        max-age: 7d # TODO lehet később módosul
+
+con:
+  user:
+    url: jdbc:postgresql://localhost:5432/progteaching_user_db
     username: postgres
     password:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 10
+      idle-timeout: 600000
+      max-lifetime: 3600000
+
+  course:
+    url: jdbc:postgresql://localhost:5433/progteaching_course_db
+    username: postgres
+    password:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 10
+      idle-timeout: 600000
+      max-lifetime: 3600000
+
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+app:
+  session:
+    timeout: 24h # TODO lehet később módosul
