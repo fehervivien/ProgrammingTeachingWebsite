@@ -1,71 +1,78 @@
 package com.ptw.progteaching.auth.controller;
 
-import com.ptw.progteaching.auth.entity.User;
-import com.ptw.progteaching.auth.model.RegisterRequest;
-import com.ptw.progteaching.repository.user.UserRepository;
+import com.ptw.progteaching.auth.model.request.LoginRequest;
+import com.ptw.progteaching.auth.model.request.RegisterRequest;
+import com.ptw.progteaching.auth.model.response.UserInfo;
+import com.ptw.progteaching.auth.service.AuthService;
+import com.ptw.progteaching.common.service.SessionService;
+import com.ptw.progteaching.common.validation.ValidationService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+// TODO Frontend esetén alakítani
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final ValidationService validationService;
+    private final AuthService authService;
+    private final SessionService sessionService;
 
-    // TODO
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody RegisterRequest registerRequest) {
-//        if (userRepository.findByUsername(req.getUsername()).isPresent()) {
-//            return Map.of("error", "Username already exists");
-//        }
+    public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
 
-        User user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setPassword(registerRequest.getPassword());
-        user.setEmail("Something");
-        userRepository.save(user);
+        validationService.badRequestFieldValidations(request);
+
+        Authentication authentication = authService.register(request);
+
+        sessionService.startSession(authentication);
 
         return ResponseEntity.ok().build();
     }
 
-    // TODO
     @PostMapping("/login")
-    public ResponseEntity<Boolean> login(
-            @RequestBody RegisterRequest req,
-            HttpSession session) {
+    public ResponseEntity<Void> login(@RequestBody LoginRequest request) {
 
-        User user = userRepository.findByUsername(req.getUsername())
-                .orElse(null);
-//
-//        if (user == null || !passwordEncoder.matches(req.getPassword(), user.getPassword())) {
-//            return Map.of("error", "Invalid credentials");
-//        }
+        validationService.badRequestFieldValidations(request);
 
-//        // Generate tokens (hidden from frontend)
-//        String accessToken = tokenManager.generateAccessToken(user.getUsername(), user.getId());
-//        String refreshToken = tokenManager.generateRefreshToken(user.getUsername(), user.getId());
-//
-//        // Store in session (Spring handles JSESSIONID automatically)
-//        SessionTokens tokens = new SessionTokens(accessToken, refreshToken, user.getId(), user.getUsername());
-//        session.setAttribute("tokens", tokens);
+        Authentication authentication = authService.login(request);
 
-        return ResponseEntity.ok(passwordEncoder.matches(req.getPassword(), user.getPassword()));
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpSession session) {
-        session.invalidate();
+        sessionService.startSession(authentication);
 
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserInfo> me(@AuthenticationPrincipal UserInfo userInfo) {
+        return ResponseEntity.ok(userInfo);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<Void> logout(HttpSession session) {
+        sessionService.invalidateSession(session);
+
+        return ResponseEntity.ok().build();
+    }
+
+    // TODO csak tesztelésnek van itt törölni később
+    @GetMapping("/debug/session")
+    public ResponseEntity<Map<String, Object>> debugSession(HttpSession session) {
+        Map<String, Object> m = new LinkedHashMap<>();
+        m.put("id", session.getId());
+        m.put("created", Instant.ofEpochMilli(session.getCreationTime()));
+        m.put("lastAccessed", Instant.ofEpochMilli(session.getLastAccessedTime()));
+        m.put("maxInactiveSeconds", session.getMaxInactiveInterval());
+        return ResponseEntity.ok(m);
     }
 }

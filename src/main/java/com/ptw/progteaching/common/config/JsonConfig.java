@@ -1,4 +1,4 @@
-package com.ptw.progteaching.config;
+package com.ptw.progteaching.common.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;

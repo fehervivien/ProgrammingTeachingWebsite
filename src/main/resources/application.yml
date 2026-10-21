@@ -9,7 +9,7 @@ server:
         name: JSESSIONID
         http-only: true # TODO átmeneti
         secure: false # TODO átmeneti
-      timeout: 24h #TODO vissza csökkenteni 30m-re később, ami a default, tesztelésekhez hasznons még most a több idő
+        max-age: 7d # TODO lehet később módosul
 
 con:
   user:
@@ -40,16 +40,6 @@ spring:
       host: localhost
       port: 6379
 
-# TODO: ezt átnézni kell-e
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
-
-jwt:
-  secret: "!E9gqD,)QXGDhFT(,{nyT&5jP;Fi.B-$?RP.W^i|RJI" #TODO valahogyan megcsinálni később hogy ez ne legyen itt, mert safety risk
-  access-expiration-ms: 3600000
-  refresh-expiration-ms: 604800000
+app:
+  session:
+    timeout: 24h # TODO lehet később módosul

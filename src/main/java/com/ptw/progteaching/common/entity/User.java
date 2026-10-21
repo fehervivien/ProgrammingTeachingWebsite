@@ -1,4 +1,4 @@
-package com.ptw.progteaching.auth.entity;
+package com.ptw.progteaching.common.entity;
 
 import lombok.Data;
 import lombok.ToString;

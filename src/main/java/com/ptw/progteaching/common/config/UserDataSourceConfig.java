@@ -1,4 +1,4 @@
-package com.ptw.progteaching.config;
+package com.ptw.progteaching.common.config;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jdbc.core.JdbcAggregateTemplate;
 import org.springframework.data.jdbc.core.convert.*;
 import org.springframework.data.jdbc.core.dialect.JdbcDialect;
@@ -25,53 +26,59 @@ import javax.sql.DataSource;
 @Configuration
 @EnableTransactionManagement
 @EnableJdbcRepositories(
-        basePackages = "com.ptw.progteaching.repository.course",
-        jdbcAggregateOperationsRef = "courseJdbcAggregateTemplate",
-        transactionManagerRef = "courseTransactionManager"
+        basePackages = "com.ptw.progteaching.common.repository.user",
+        jdbcAggregateOperationsRef = "userJdbcAggregateTemplate",
+        transactionManagerRef = "userTransactionManager"
 )
-public class CourseDataSourceConfig {
+public class UserDataSourceConfig {
 
     @Bean
-    @ConfigurationProperties("con.course")
-    public DataSourceProperties courseDataSourceProperties() {
+    @ConfigurationProperties("con.user")
+    public DataSourceProperties userDataSourceProperties() {
         return new DataSourceProperties();
     }
 
+    @Primary
     @Bean
-    @ConfigurationProperties("con.course.hikari")
-    public HikariDataSource courseDataSource(@Qualifier("courseDataSourceProperties") DataSourceProperties dataSourceProperties) {
+    @ConfigurationProperties("con.user.hikari")
+    public HikariDataSource userDataSource(@Qualifier("userDataSourceProperties") DataSourceProperties dataSourceProperties) {
         return dataSourceProperties.initializeDataSourceBuilder()
                 .type(HikariDataSource.class)
                 .build();
     }
 
+    @Primary
     @Bean
-    public NamedParameterJdbcTemplate courseNamedParameterJdbcOperations(@Qualifier("courseDataSource") DataSource dataSource) {
+    public NamedParameterJdbcTemplate userNamedParameterJdbcOperations(@Qualifier("userDataSource") DataSource dataSource) {
         return new NamedParameterJdbcTemplate(dataSource);
     }
 
+    @Primary
     @Bean
-    public JdbcDialect courseDialect() {
+    public JdbcDialect userDialect() {
         return JdbcPostgresDialect.INSTANCE;
     }
 
+    @Primary
     @Bean
-    public JdbcCustomConversions courseJdbcCustomConversions() {
+    public JdbcCustomConversions userJdbcCustomConversions() {
         return new JdbcCustomConversions();
     }
 
+    @Primary
     @Bean
-    public JdbcMappingContext courseJdbcMappingContext(@Qualifier("courseJdbcCustomConversions") JdbcCustomConversions conversions) {
+    public JdbcMappingContext userJdbcMappingContext(@Qualifier("userJdbcCustomConversions") JdbcCustomConversions conversions) {
         JdbcMappingContext context = new JdbcMappingContext(DefaultNamingStrategy.INSTANCE);
         context.setSimpleTypeHolder(conversions.getSimpleTypeHolder());
 
         return context;
     }
 
+    @Primary
     @Bean
-    public DataAccessStrategy courseDataAccessStrategy(@Qualifier("courseNamedParameterJdbcOperations") NamedParameterJdbcTemplate jdbcTemplate,
-                                                       @Qualifier("courseJdbcConverter") JdbcConverter converter,
-                                                       @Qualifier("courseDialect") JdbcDialect dialect) {
+    public DataAccessStrategy userDataAccessStrategy(@Qualifier("userNamedParameterJdbcOperations") NamedParameterJdbcTemplate jdbcTemplate,
+                                                     @Qualifier("userJdbcConverter") JdbcConverter converter,
+                                                     @Qualifier("userDialect") JdbcDialect dialect) {
 
         return new DataAccessStrategyFactory(
                 converter,
@@ -81,12 +88,13 @@ public class CourseDataSourceConfig {
         ).create();
     }
 
+    @Primary
     @Bean
-    public JdbcConverter courseJdbcConverter(@Qualifier("courseJdbcMappingContext") JdbcMappingContext mappingContext,
-                                             @Qualifier("courseNamedParameterJdbcOperations") NamedParameterJdbcTemplate jdbcTemplate,
-                                             @Lazy @Qualifier("courseDataAccessStrategy") RelationResolver relationResolver,
-                                             @Qualifier("courseJdbcCustomConversions") JdbcCustomConversions conversions,
-                                             @Qualifier("courseDialect") JdbcDialect dialect) {
+    public JdbcConverter userJdbcConverter(@Qualifier("userJdbcMappingContext") JdbcMappingContext mappingContext,
+                                           @Qualifier("userNamedParameterJdbcOperations") NamedParameterJdbcTemplate jdbcTemplate,
+                                           @Lazy @Qualifier("userDataAccessStrategy") RelationResolver relationResolver,
+                                           @Qualifier("userJdbcCustomConversions") JdbcCustomConversions conversions,
+                                           @Qualifier("userDialect") JdbcDialect dialect) {
 
         DefaultJdbcTypeFactory typeFactory = new DefaultJdbcTypeFactory(
                 jdbcTemplate.getJdbcOperations(),
@@ -95,17 +103,20 @@ public class CourseDataSourceConfig {
         return new MappingJdbcConverter(mappingContext, relationResolver, conversions, typeFactory);
     }
 
+    @Primary
     @Bean
-    public JdbcAggregateTemplate courseJdbcAggregateTemplate(ApplicationContext applicationContext,
-                                                             @Qualifier("courseJdbcMappingContext") JdbcMappingContext mappingContext,
-                                                             @Qualifier("courseJdbcConverter") JdbcConverter converter,
-                                                             @Qualifier("courseDataAccessStrategy") DataAccessStrategy dataAccessStrategy) {
+    public JdbcAggregateTemplate userJdbcAggregateTemplate(ApplicationContext applicationContext,
+                                                           @Qualifier("userJdbcMappingContext") JdbcMappingContext mappingContext,
+                                                           @Qualifier("userJdbcConverter") JdbcConverter converter,
+                                                           @Qualifier("userDataAccessStrategy") DataAccessStrategy dataAccessStrategy) {
 
         return new JdbcAggregateTemplate(applicationContext, mappingContext, converter, dataAccessStrategy);
     }
 
+
+    @Primary
     @Bean
-    public DataSourceTransactionManager courseTransactionManager(@Qualifier("courseDataSource") DataSource dataSource) {
+    public DataSourceTransactionManager userTransactionManager(@Qualifier("userDataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 }
