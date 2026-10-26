@@ -5,7 +5,9 @@
 With docker run this command to setup the PostgreSQL DB used by the application:
 
 ```bash
-docker run -d --name progteaching-postgres -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_DB=progteaching_db -e POSTGRES_HOST_AUTH_METHOD=trust postgres:18.6`
+docker run -d --name progteaching-user-db -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_DB=progteaching_user_db -e POSTGRES_HOST_AUTH_METHOD=trust postgres:18.6
+docker run -d --name progteaching-course-db -p 5433:5432 -e POSTGRES_USER=postgres -e POSTGRES_DB=progteaching_course_db -e POSTGRES_HOST_AUTH_METHOD=trust postgres:18.6
+docker run -d --name redis-stack -p 6379:6379 -d redis:latest
 ```
 
 ## Frontend / Tailwind CSS
