@@ -15,7 +15,7 @@ con:
   user:
     url: jdbc:postgresql://localhost:5432/progteaching_user_db
     username: postgres
-    password:
+    password: szerencse
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 1
@@ -26,7 +26,7 @@ con:
   course:
     url: jdbc:postgresql://localhost:5433/progteaching_course_db
     username: postgres
-    password:
+    password: szerencse
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 1
@@ -35,6 +35,8 @@ con:
       max-lifetime: 3600000
 
 spring:
+  session:
+    store-type: none
   data:
     redis:
       host: localhost

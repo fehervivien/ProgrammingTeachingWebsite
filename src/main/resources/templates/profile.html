@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout('Profil - ProgTeaching', ~{::#page-content})}">
+<body>
+
+<div id="page-content" class="flex-1 overflow-y-auto p-8">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-sm border border-gray-200 mt-4">
+
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-6">Adataim és Haladásom</h1>
+
+        <div class="mb-10 bg-slate-50 p-6 rounded-xl border border-gray-100">
+            <div class="flex justify-between items-center mb-2">
+                <span class="font-bold text-gray-700">Java Alapok Kurzus</span>
+                <span class="font-bold text-blue-600">35%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-4">
+                <div class="bg-blue-600 h-4 rounded-full transition-all duration-1000" style="width: 35%"></div>
+            </div>
+            <p class="text-sm text-gray-500 mt-2">Még 15 lecke van hátra a kurzus befejezéséig.</p>
+        </div>
+
+        <form action="#" method="post" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">E-mail cím</label>
+                    <input type="email" value="teszt@progteaching.hu" readonly class="w-full px-4 py-2 border border-gray-300 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed">
+                </div>
+            </div>
+            <hr class="border-gray-200">
+            <div class="flex items-center justify-between pt-4">
+                <button type="button" class="text-red-600 hover:text-red-800 font-medium px-4 py-2 border border-red-200 hover:bg-red-50 rounded-lg transition">
+                    Fiók törlése
+                </button>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-8 rounded-lg shadow-md transition">
+                    Módosítások mentése
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

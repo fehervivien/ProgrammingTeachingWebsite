@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout('Kurzus - ProgTeaching', ~{::#page-content})}">
+<body>
+
+<div id="page-content" class="flex-1 flex overflow-hidden">
+
+    <aside class="w-64 bg-slate-100 border-r border-gray-200 overflow-y-auto flex-shrink-0 hidden md:block">
+        <div class="p-4 border-b border-gray-200 font-bold text-gray-700">Tartalomjegyzék</div>
+        <ul class="p-2 space-y-1">
+            <li><a href="#" class="flex items-center gap-3 w-full p-2 text-gray-600 hover:bg-gray-200 rounded-lg transition"><span class="text-green-500">✅</span> 1. Bevezetés</a></li>
+            <li><a href="#" class="flex items-center gap-3 w-full p-2 bg-white text-blue-600 font-medium rounded-lg border border-gray-200 shadow-sm"><span class="text-blue-500">▶️</span> 2. Változók és típusok</a></li>
+            <li><a href="#" class="flex items-center gap-3 w-full p-2 text-gray-400 cursor-not-allowed rounded-lg"><span class="text-gray-400">🔒</span> 3. Ciklusok</a></li>
+        </ul>
+    </aside>
+
+    <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+
+        <div class="w-full lg:w-1/2 p-6 overflow-y-auto border-r border-gray-200 bg-white relative">
+            <span class="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mb-4">Elmélet & Feladat</span>
+            <h1 class="text-3xl font-extrabold text-gray-900 mb-4">2. Változók és Típusok</h1>
+
+            <div class="text-gray-600 mb-8 leading-relaxed">
+                <p class="mb-4">A változók olyan tárolók, amelyek adatokat mentenek el a memóriában. Java-ban minden változónak típust kell adnunk.</p>
+                <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm shadow-inner"><code>int kor = 25;
+System.out.println(kor);</code></pre>
+            </div>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-20 shadow-sm">
+                <h3 class="font-bold text-yellow-800 mb-1">Feladat:</h3>
+                <p class="text-yellow-700 text-sm">Hozz létre egy <code>szam</code> nevű egész (int) változót, adj neki értéket, és írasd ki a konzolra!</p>
+            </div>
+
+            <button class="absolute bottom-6 left-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg border border-gray-300 transition flex items-center gap-2">
+                💡 Útmutató (Súgó)
+            </button>
+        </div>
+
+        <div class="w-full lg:w-1/2 bg-gray-50 flex flex-col">
+            <div class="bg-gray-800 text-gray-300 text-sm px-4 py-2 flex justify-between items-center shadow-md z-10">
+                <span class="font-mono">Main.java</span>
+                <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-4 rounded transition">▶ Kód Validálása</button>
+            </div>
+
+            <textarea class="flex-1 bg-[#1e1e1e] text-gray-100 font-mono p-4 outline-none resize-none focus:ring-0 leading-relaxed" spellcheck="false">
+public class Main {
+    public static void main(String[] args) {
+        // Írd ide a kódod:
+
+    }
+}</textarea>
+
+            <div class="h-48 bg-black text-gray-300 font-mono text-sm p-4 border-t border-gray-700 overflow-y-auto flex flex-col shadow-inner">
+                <div class="text-gray-500 mb-2 border-b border-gray-800 pb-1">Konzol kimenet:</div>
+                <div class="text-green-400">Sikeres futtatás! 🎉<br>A változó értéke: 25.</div>
+            </div>
+
+            <div class="bg-white border-t border-gray-200 p-4 flex justify-between items-center">
+                <button class="text-gray-500 hover:text-gray-800 font-medium flex items-center gap-1 transition">◀ Előző lecke</button>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition flex items-center gap-2">Tovább ▶</button>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="layout(title, content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">ProgTeaching</title>
+    <link rel="stylesheet" th:href="@{/css/tailwind.css}">
+</head>
+<body class="bg-slate-50 h-screen flex flex-col font-sans text-gray-900 transition-colors duration-300" id="body-theme">
+
+<header class="bg-white shadow-sm border-b border-gray-200 py-3 px-6 flex items-center justify-between z-10 shrink-0">
+    <div class="flex items-center gap-8">
+        <a th:href="@{/}" class="text-2xl font-extrabold text-gray-800 flex items-center gap-2">
+            ProgTeaching <span class="text-blue-600">🚀</span>
+        </a>
+        <nav class="hidden md:flex gap-6">
+            <a th:href="@{/}" class="text-gray-600 hover:text-blue-600 font-medium transition">Kezdőlap</a>
+            <a th:href="@{/about}" class="text-gray-600 hover:text-blue-600 font-medium transition">Kurzusról</a>
+            <a th:href="@{/course}" sec:authorize="isAuthenticated()" class="text-blue-600 hover:text-blue-800 font-bold transition">Kurzus</a>
+        </nav>
+    </div>
+    <div class="flex items-center gap-5">
+        <div class="flex items-center gap-2 bg-gray-100 rounded-full p-1 border border-gray-300 shadow-inner">
+            <span class="text-sm pl-1">☀️</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="theme-toggle" class="sr-only peer">
+                <div class="w-9 h-5 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-slate-700"></div>
+            </label>
+            <span class="text-sm pr-1">🌙</span>
+        </div>
+        <div sec:authorize="isAnonymous()" class="flex items-center gap-3">
+            <a th:href="@{/login}" class="text-gray-700 hover:text-blue-600 font-medium px-2 py-2 transition">Bejelentkezés</a>
+            <a th:href="@{/register}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow transition">Regisztráció</a>
+        </div>
+        <div sec:authorize="isAuthenticated()" class="flex items-center gap-4">
+            <a th:href="@{/profile}" class="flex items-center gap-2 text-gray-700 hover:text-blue-600 font-medium transition">
+                <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">P</div>
+                Profil
+            </a>
+            <a th:href="@{/logout}" class="text-red-500 hover:text-red-700 font-medium transition text-sm">Kijelentkezés</a>
+        </div>
+    </div>
+</header>
+
+<th:block th:replace="${content}"></th:block>
+
+<!-- Sötét/Világos téma -->
+<style>
+    /* Fő háttér és szöveg sötét módban */
+    body.dark-mode {
+        background-color: #0f172a !important; /* slate-900 */
+        color: #f8fafc !important; /* slate-50 */
+    }
+    /* Dobozok, fekete/fehér kártyák sötétítése */
+    body.dark-mode header,
+    body.dark-mode aside,
+    body.dark-mode .bg-white {
+        background-color: #1e293b !important; /* slate-800 */
+        color: #f8fafc !important;
+        border-color: #334155 !important; /* slate-700 */
+    }
+    /* Input mezők és textareák */
+    body.dark-mode input,
+    body.dark-mode textarea {
+        background-color: #0f172a !important;
+        color: #f8fafc !important;
+        border-color: #475569 !important;
+    }
+    /* Címkék (Label-ek), űrlap feliratok, címsorok */
+    body.dark-mode label,
+    body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+    body.dark-mode p, body.dark-mode span:not(.text-blue-600):not(.text-green-500) {
+        color: #f8fafc !important;
+    }
+    /* KIEGÉSZÍTÉS 1: Felső menüsor linkjei és logója sötét módban */
+    body.dark-mode header a,
+    body.dark-mode header span {
+        color: #f8fafc !important;
+    }
+    /* KIEGÉSZÍTÉS 2: Kurzusról oldalon lévő h2/h3 (Mit fogsz tanulni?) sötét módban */
+    body.dark-mode .max-w-4xl h2,
+    body.dark-mode .max-w-4xl h3 {
+        color: #f8fafc !important;
+    }
+    /* Világos gombok sötétítése a Kezdőlapon (pl. Tudj meg többet) */
+    body.dark-mode a.bg-gray-100 {
+        background-color: #334155 !important;
+        color: #f8fafc !important;
+    }
+    body.dark-mode a.bg-gray-100:hover {
+        background-color: #475569 !important;
+    }
+</style>
+
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+
+    function applyTheme(isDark) {
+        if (isDark) {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    // Oldal betöltésekor ellenőrizzük a mentett beállítást
+    if (localStorage.getItem('theme') === 'dark') {
+        if (themeToggle) themeToggle.checked = true;
+        applyTheme(true);
+    }
+
+    // Kapcsoló eseményfigyelője
+    if (themeToggle) {
+        themeToggle.addEventListener('change', function() {
+            applyTheme(this.checked);
+        });
+    }
+</script>
+</body>
+</html>
