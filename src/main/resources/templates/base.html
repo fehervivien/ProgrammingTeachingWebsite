@@ -72,17 +72,14 @@
     body.dark-mode p, body.dark-mode span:not(.text-blue-600):not(.text-green-500) {
         color: #f8fafc !important;
     }
-    /* KIEGÉSZÍTÉS 1: Felső menüsor linkjei és logója sötét módban */
     body.dark-mode header a,
     body.dark-mode header span {
         color: #f8fafc !important;
     }
-    /* KIEGÉSZÍTÉS 2: Kurzusról oldalon lévő h2/h3 (Mit fogsz tanulni?) sötét módban */
     body.dark-mode .max-w-4xl h2,
     body.dark-mode .max-w-4xl h3 {
         color: #f8fafc !important;
     }
-    /* Világos gombok sötétítése a Kezdőlapon (pl. Tudj meg többet) */
     body.dark-mode a.bg-gray-100 {
         background-color: #334155 !important;
         color: #f8fafc !important;
@@ -105,7 +102,7 @@
         }
     }
 
-    // Oldal betöltésekor ellenőrizzük a mentett beállítást
+    // Oldal betöltésekor ellenőrzi a mentett beállítást
     if (localStorage.getItem('theme') === 'dark') {
         if (themeToggle) themeToggle.checked = true;
         applyTheme(true);
