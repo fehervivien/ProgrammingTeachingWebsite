@@ -26,7 +26,7 @@ con:
   course:
     url: jdbc:postgresql://localhost:5433/progteaching_course_db
     username: postgres
-    password: szerencse
+    password:
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 1
