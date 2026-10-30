@@ -2,65 +2,148 @@
 <html lang="hu" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout('Kurzus - ProgTeaching', ~{::#page-content})}">
 <body>
 
-<div id="page-content" class="flex-1 flex overflow-hidden">
+<div id="page-content" class="flex-1 min-h-0 min-w-0 flex overflow-hidden">
 
-    <aside class="w-64 bg-slate-100 border-r border-gray-200 overflow-y-auto flex-shrink-0 hidden md:block">
+    <aside class="w-64 bg-slate-100 border-r border-gray-200
+              flex flex-col flex-shrink-0 hidden md:flex">
         <div class="p-4 border-b border-gray-200 font-bold text-gray-700">Tartalomjegyzék</div>
-        <ul class="p-2 space-y-1">
-            <li><a href="#" class="flex items-center gap-3 w-full p-2 text-gray-600 hover:bg-gray-200 rounded-lg transition"><span class="text-green-500">✅</span> 1. Bevezetés</a></li>
-            <li><a href="#" class="flex items-center gap-3 w-full p-2 bg-white text-blue-600 font-medium rounded-lg border border-gray-200 shadow-sm"><span class="text-blue-500">▶️</span> 2. Változók és típusok</a></li>
-            <li><a href="#" class="flex items-center gap-3 w-full p-2 text-gray-400 cursor-not-allowed rounded-lg"><span class="text-gray-400">🔒</span> 3. Ciklusok</a></li>
+        <ul id="lesson-list"
+            class="flex-1 overflow-y-auto p-2 space-y-1">
         </ul>
+
+        <!-- Útmutató gomb és felugró panel -->
+        <div class="relative mt-auto p-4 border-t border-gray-200">
+
+            <button id="hint-button"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="hint-popover"
+                    class="w-full bg-white hover:bg-gray-200
+                        text-gray-700 font-medium py-2 px-3
+                        rounded-lg border border-gray-300
+                        transition flex items-center justify-center gap-2">
+                💡 Útmutató (Súgó)
+            </button>
+
+            <div id="hint-popover"
+                class="absolute bottom-full left-3 mb-3 z-30
+                        w-80 max-w-[calc(100vw-2rem)]
+                        rounded-xl border border-gray-200 bg-white
+                        p-4 shadow-xl
+                        opacity-0 invisible translate-y-2
+                        pointer-events-none
+                        transition-all duration-200 ease-out"
+                aria-hidden="true">
+
+                <div class="mb-2 flex items-center justify-between gap-3">
+                    <h2 class="font-bold text-gray-900">💡 Útmutató</h2>
+
+                    <button id="close-hint-button"
+                            type="button"
+                            aria-label="Útmutató bezárása"
+                            class="rounded-md px-2 py-1 text-lg
+                                text-gray-400 hover:bg-gray-100
+                                hover:text-gray-800">
+                        &times;
+                    </button>
+                </div>
+
+                <p id="hint-lesson-title"
+                class="mb-2 text-xs font-semibold text-blue-600"></p>
+
+                <p id="hint-content"
+                class="whitespace-pre-line text-sm leading-relaxed
+                        text-gray-700"></p>
+
+                <div class="absolute -bottom-2 left-6 h-4 w-4
+                            rotate-45 border-b border-r
+                            border-gray-200 bg-white">
+                </div>
+            </div>
+        </div>
     </aside>
 
-    <main class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+    <main class="flex-1 min-h-0 min-w-0 flex flex-col lg:flex-row overflow-hidden">
 
-        <div class="w-full lg:w-1/2 p-6 overflow-y-auto border-r border-gray-200 bg-white relative">
+        <div class="w-full lg:w-1/2 min-w-0 min-h-0 overflow-y-auto bg-gray-50 flex flex-col p-6 lg:p-8">
             <span class="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mb-4">Elmélet & Feladat</span>
-            <h1 class="text-3xl font-extrabold text-gray-900 mb-4">2. Változók és Típusok</h1>
+            <h1 id="lesson-title" class="text-3xl font-extrabold text-gray-900 mb-4"></h1>
 
             <div class="text-gray-600 mb-8 leading-relaxed">
-                <p class="mb-4">A változók olyan tárolók, amelyek adatokat mentenek el a memóriában. Java-ban minden változónak típust kell adnunk.</p>
-                <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm shadow-inner"><code>int kor = 25;
-System.out.println(kor);</code></pre>
+                <p id="lesson-description" class="mb-4"></p>
+                <pre class="bg-gray-800 text-gray-100 p-4 rounded-lg font-mono text-sm shadow-inner"><code id="lesson-example"></code></pre>
             </div>
 
             <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-20 shadow-sm">
                 <h3 class="font-bold text-yellow-800 mb-1">Feladat:</h3>
-                <p class="text-yellow-700 text-sm">Hozz létre egy <code>szam</code> nevű egész (int) változót, adj neki értéket, és írasd ki a konzolra!</p>
+                <p id="lesson-task" class="text-yellow-700 text-sm"></p>
             </div>
-
-            <button class="absolute bottom-6 left-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg border border-gray-300 transition flex items-center gap-2">
-                💡 Útmutató (Súgó)
-            </button>
         </div>
 
-        <div class="w-full lg:w-1/2 bg-gray-50 flex flex-col">
-            <div class="bg-gray-800 text-gray-300 text-sm px-4 py-2 flex justify-between items-center shadow-md z-10">
-                <span class="font-mono">Main.java</span>
-                <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-4 rounded transition">▶ Kód Validálása</button>
-            </div>
+        <div class="w-full lg:w-1/2 min-w-0 min-h-0 p-3 lg:p-4
+            bg-gray-100 flex flex-col">
+            <div class="flex-1 min-h-0 min-w-0 flex flex-col
+                        overflow-hidden rounded-2xl border border-gray-200
+                        bg-white shadow-lg shadow-gray-200/60">
+                <div class="bg-slate-900 text-gray-300 text-sm px-5 py-3
+                            flex justify-between items-center border-b border-slate-700
+                            flex-shrink-0">
+                    <span class="font-mono">Main.java</span>
+                    <button id="validate-code"
+                                type="button"
+                                class="bg-emerald-500 hover:bg-emerald-400
+                                       active:scale-[0.98] text-white text-sm font-semibold
+                                       py-2 px-4 rounded-lg transition-all duration-200
+                                       shadow-sm shadow-emerald-900/20">
+                            ▶ Kód Validálása
+                    </button>
+                </div>
 
-            <textarea class="flex-1 bg-[#1e1e1e] text-gray-100 font-mono p-4 outline-none resize-none focus:ring-0 leading-relaxed" spellcheck="false">
-public class Main {
-    public static void main(String[] args) {
-        // Írd ide a kódod:
+                <div id="code-editor"
+                    class="flex-1 min-h-0 min-w-0 w-full relative overflow-hidden">
+                </div>
 
-    }
-}</textarea>
+                <div class="h-48 flex-shrink-0 bg-slate-950 text-gray-300
+                            font-mono text-sm p-4 border-t border-slate-800
+                            overflow-y-auto flex flex-col">
 
-            <div class="h-48 bg-black text-gray-300 font-mono text-sm p-4 border-t border-gray-700 overflow-y-auto flex flex-col shadow-inner">
-                <div class="text-gray-500 mb-2 border-b border-gray-800 pb-1">Konzol kimenet:</div>
-                <div class="text-green-400">Sikeres futtatás! 🎉<br>A változó értéke: 25.</div>
-            </div>
+                    <div class="text-gray-400 mb-3 pb-2 border-b border-slate-800
+                                flex items-center gap-2">
+                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
+                        <span class="font-semibold text-xs uppercase tracking-wider">
+                            Konzol kimenet
+                        </span>
+                    </div>
 
-            <div class="bg-white border-t border-gray-200 p-4 flex justify-between items-center">
-                <button class="text-gray-500 hover:text-gray-800 font-medium flex items-center gap-1 transition">◀ Előző lecke</button>
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition flex items-center gap-2">Tovább ▶</button>
+                    <div id="console-output" class="text-gray-300 leading-relaxed">
+                        A kódod ellenőrzésre vár.
+                    </div>
+                </div>
+
+                <div class="bg-white border-t border-gray-100 p-4
+                            flex justify-between items-center gap-3 flex-shrink-0">
+                    <button id="previous-lesson"
+                            type="button"
+                            class="text-gray-500 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center gap-1 transition">
+                        ◀ Előző lecke
+                    </button>
+                    <button id="next-lesson"
+                            type="button"
+                            class="bg-blue-600 hover:bg-blue-500
+                                   disabled:opacity-40 disabled:cursor-not-allowed
+                                   text-white text-sm font-semibold py-2.5 px-5
+                                   rounded-xl shadow-sm hover:shadow-md
+                                   transition-all duration-200 flex items-center gap-2">
+                        Tovább ▶
+                    </button>
+                </div>
             </div>
         </div>
 
     </main>
+
+    <script type="module" th:src="@{/js/editor.bundle.js}"></script>
+    <script th:src="@{/js/course.js}"></script>
 </div>
 
 </body>

@@ -132,6 +132,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<addResources>true</addResources>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -189,6 +190,15 @@
 						</goals>
 						<configuration>
 							<arguments>run build:css</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>vite-build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build:frontend</arguments>
 						</configuration>
 					</execution>
 				</executions>
